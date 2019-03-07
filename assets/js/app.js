@@ -11,7 +11,7 @@
 //Push user input from Textbox to this array then button placement Function call to include the new string added to array. 
 
 var topics = ["Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Lunar",
-"Sun","Comets","Asteroids","space","stars","galaxy","cosmos","astronomy","universe"];
+"Sun","Comets","Asteroids","Space","Stars","Galaxy","Cosmos","Astronomy","Universe"];
 
 //API key used to retrieve data from the servers.
 var apiKey= "&api_key=aDWTP2Hv0BWis8vPpDBeKqrdD6aBRF6W";
@@ -27,20 +27,28 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q="+queryUserInput+apiLimit
 //console log query url to test call & check for errors
 console.log(queryURL);
 //-----------------------------------------FUNCTION CREATION-----------------------------------------------------
+//function to generate buttons with the topics array as the data Value
+//topicButtonsGen function will be called when the page loads , and on the click event for the Api Topic Submit button to add new values the user input
 function topicButtonsGen() {
-    //function to generate buttons with the topics array as the data Value
-    //this function will be called when the page loads , and on the click event
-    //for the button under the text box to add new buttons to the HTML with the value the USER inputs.
 
     //clear the DIV containing the current ApiTopic buttons to prevent duplicates 
+    $("#button-placement").empty();
+        
+    for (var i = 0 ; i < topics.length ; i++) {
 
-    //  Initiate variable to build APIBUTTONS var apiButtons = $("<button>");
-    //  inside for loop  (loop through each index of the topic array )      {
-    //        .attr("data-topic",String pulled from current index of the array)
-    //  add attribute equal to the String of the current index in the array for each button to be able to grab this value to make the api request
-    //       .addClass(apiCallButton) to the buttons
-    //       that class will be used for the handle for click event to call the API based on the value of the button clicked. 
-    //      }
+        //  Initiate variable to build APIBUTTONS 
+        var apiButtons = $("<button>");
+
+        //apply require attributes to buttons
+        apiButtons.attr("type","button");
+        apiButtons.attr("data-topicValue",topics[i]);
+        //add classes for bootstrap bootstrap styling and a handle for click event/custom styling
+        apiButtons.addClass("btn btn btn-dark api-call-buttons");
+        //places string from current index of the topics array
+        apiButtons.text(topics[i]);
+        //append the values to the button-placement div each iteration of the loop
+        $("#button-placement").append(apiButtons);
+    }
 }
 function imageCreation(){
     // this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
@@ -59,9 +67,14 @@ function imageCreation(){
 
 // Shorthand for $( document ).ready()
 $(function() {
+
     //document ready function to prevent any issues well loading JS and the page. 
     //initial call to generate the TOPICS Array buttons when the page is loaded.
+
+    topicButtonsGen();
+
     console.log( "ready!" );    
+
     $("#textButton").on( "click", function() {  
         
         //Click event for submit button
@@ -69,7 +82,9 @@ $(function() {
         //      take in value and push it to topics array
         //      Call function to clear Gif button divs & generate buttons with updated array values
         //     clear the textbox inside the html to wait for new user input, and dump the variable containing the previous user input.
-        //console.log is your friend
+
+        //--------------console.log is your friend----------------------
+
         event.preventDefault();
         console.log("text button clicked!");
         var buttonData = $("#userButtonText").val().trim();
@@ -79,10 +94,11 @@ $(function() {
         console.log("User entered: "+ buttonData +" ;in the textbox" );
         buttonData='';
         console.log(buttonData);
+        topicButtonsGen();//Call to the API BUTTON placement function to add to the HTML document new user input along with everything in the array previously
 
     });
     //Click event for API Call buttons class
-    $(".apiCallButton").on( "click", function() {  
+    $(".api-call-buttons").on( "click", function() {  
        
         //      use the Value from the button clicked 
         //      attach to an AJAX call with the value in the search term
