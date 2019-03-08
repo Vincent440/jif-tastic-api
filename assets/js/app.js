@@ -6,18 +6,18 @@
 //link to portfolio page https://vincent440.github.io/portfolio.html
 //-------------------Giphy API WEEK 6 HW----------------------Global variables----------------------------------
 var topics = ["Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Lunar",
-"Sun","Comets","Asteroids","Space","Stars","Galaxy","Cosmos","Astronomy","Universe"];//Starting topics array based around Space/astronomy styles
+"Sun","Comets","Asteroids","Space","Stars","Galaxy","Cosmos","Astronomy","Universe","Black Holes"];//Starting topics array based around Space/astronomy styles
 
 //API key used to retrieve data from the servers.
-var apiKey= "api_key=aDWTP2Hv0BWis8vPpDBeKqrdD6aBRF6W";
+var apiKey= "&api_key=aDWTP2Hv0BWis8vPpDBeKqrdD6aBRF6W";
 //Request limit set to 10, bonus = add another user input to adjust the limit accordingly to whatever value is selected. 
-var apiLimitValue = "10";
+var limitValue = "10";
 //a string containing the search request using the VALUE of the button clicked. currently space to test api call 
 var queryUserInput ="";
 
 //the query url to call the api using string concatenation to build the API request based off of what button is clicked
 //bonuses= add option to adjust limit, option to append more gifs instead of just replace, option to local storage save favorites gifs
-var queryURL = "https://api.giphy.com/v1/gifs/search?"+"limit="+apiLimitValue+"&"+apiKey+"&q=";//this will get placed into my AJAX call with my GET method.
+var queryURL = "https://api.giphy.com/v1/gifs/search?"+"limit="+limitValue+apiKey+"&q=";//this will get placed into my AJAX call with my GET method.
 
 //console log query url to test call & check for errors
 console.log(queryURL);
@@ -46,30 +46,43 @@ function topicButtonsGen() {
     }
     
 }
-function getApiCallData(queryData){
-    queryData.toLowerCase();
-    console.log(queryData);
-    queryURL+=queryData;
-    queryUserInput=queryData;
-    console.log(queryUserInput);
+
+function imageCreation(ajaxData)  {
+    console.log(ajaxData);
+
+}
+
+
+function getApiCallData(){
+
+    var searchValue = this.getAttribute('data-topicvalue').trim();
+
+    searchValue = searchValue.toLowerCase();
+
+    searchValue = encodeURI(searchValue);
+    console.log(searchValue);//use the Value from the button clicked 
+
+    queryURL+=searchValue;//attach to AJAX call the value in the search term grabbed from the button clicked.   
+            
     console.log(queryURL);
-    return $.ajax({
+
+    $.ajax({//AJAX CALL
         
         url:queryURL,
         type:"GET"
 
     }).then(function(responseData) {
-        console.log(responseData);
+        imageCreation(responseData)
+        //console.log(responseData);
         return responseData;
 
-    }).catch(function(errorData){
-        console.log(errorData);
-
     })
+    queryURL = "https://api.giphy.com/v1/gifs/search?"+"limit="+limitValue+apiKey+"&q=";
+    console.log(queryURL);
+
 }
 
 
-function imageCreation(){
     // this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
     //this will take in the retrieved Data from the AJAX call response
 
@@ -81,7 +94,7 @@ function imageCreation(){
     //add attributes to the images if needed here
     //add a class to the gifs for either styling or click function if needed to start/stop animation
     //DOM push the gifs to the page inside the DIV created to hold them
-}
+
 //----DOCUMENT READY-----------------------FUNCTION CALLS AND CLICK EVENTS-----------------------------------------
 
 // Shorthand for $( document ).ready()
@@ -114,23 +127,8 @@ $(function() {
         topicButtonsGen();//Call to the API BUTTON placement function to add to the HTML document new user input along with everything in the array previously
 
     });
-
-    //Click event for API Call buttons class
-    $(document).on( "click",".api-call-buttons", function() {  
-
-        console.log("api button clicked");
-        var searchValue = this.getAttribute('data-topicvalue');
-        //console.log(searchValue);
-        getApiCallData(searchValue);
-        console.log(typeof searchValue);
-
-
-        //      use the Value from the button clicked 
-        //      attach to an AJAX call with the value in the search term
-        //      AJAX CALL
-        //and THEN function inside click event
-        
-    });
+    //Click event for API Call buttons class on the document
+    $(document).on( "click",".api-call-buttons", getApiCallData);
 
     $(document).on( "click",/*ENTER GIF CLASS HERE */ function() {
 
