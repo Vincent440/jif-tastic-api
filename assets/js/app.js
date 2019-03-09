@@ -68,7 +68,9 @@ function imageCreation(ajaxData)  {
         
         var imgTag = $("<img>");
         
-        imgTag.attr("src",fixedUrl);
+        imgTag.attr("src",fixedUrl);// got the static images to display need to add ratings 
+        //need to add data tags to allow click event to switch between static and gif animated. 
+        //need to remove previous images each new request. 
 
         imageDiv.append(imgTag);
 
