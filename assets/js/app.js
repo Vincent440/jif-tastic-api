@@ -48,12 +48,44 @@ function topicButtonsGen() {
 }
 
 function imageCreation(ajaxData)  {
-    console.log(ajaxData);
+
+    //console.log(ajaxData);
+
+    var gifImgData = ajaxData.data;
+    
+
+    console.log(gifImgData);
+
+    for (var gifIndex = 0; gifIndex < gifImgData.length; gifIndex++)   {
+
+        var gifRating = gifImgData[gifIndex].rating;
+
+        var fixedUrl = gifImgData[gifIndex].images.original_still.url;
+
+        var animatedUrl = gifImgData[gifIndex].images.original.url;
+
+        var imageDiv = $("<div>");
+        
+        var imgTag = $("<img>");
+        
+        imgTag.attr("src",fixedUrl);
+
+        imageDiv.append(imgTag);
+
+
+        $("#image-box").prepend(imageDiv);
+
+        console.log(gifRating);
+        console.log(fixedUrl);
+        console.log(animatedUrl);
+        //console.log(gifImgData[gifIndex]);
+        //console.log(gifIndex);
+    }
 
 }
 
 
-function getApiCallData(){
+function getApiCallData() {
 
     var searchValue = this.getAttribute('data-topicvalue').trim();
 
@@ -83,17 +115,17 @@ function getApiCallData(){
 }
 
 
-    // this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
-    //this will take in the retrieved Data from the AJAX call response
+// this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
+//this will take in the retrieved Data from the AJAX call response
 
-    //variable to create image tags to store GIF Web URLs
+//variable to create image tags to store GIF Web URLs
 
-    //a for loop ( to loop through each index of the retrieved data from the GIPHY api)
-    //
-    //place the web url of the image inside the SRC of the image element var created
-    //add attributes to the images if needed here
-    //add a class to the gifs for either styling or click function if needed to start/stop animation
-    //DOM push the gifs to the page inside the DIV created to hold them
+//a for loop ( to loop through each index of the retrieved data from the GIPHY api)
+//
+//place the web url of the image inside the SRC of the image element var created
+//add attributes to the images if needed here
+//add a class to the gifs for either styling or click function if needed to start/stop animation
+//DOM push the gifs to the page inside the DIV created to hold them
 
 //----DOCUMENT READY-----------------------FUNCTION CALLS AND CLICK EVENTS-----------------------------------------
 
