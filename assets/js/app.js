@@ -17,7 +17,9 @@ var queryUserInput ="";
 
 //the query url to call the api using string concatenation to build the API request based off of what button is clicked
 //bonuses= add option to adjust limit, option to append more gifs instead of just replace, option to local storage save favorites gifs
-var queryURL = "https://api.giphy.com/v1/gifs/search?"+"limit="+limitValue+apiKey+"&q=";//this will get placed into my AJAX call with my GET method.
+
+//NEED TO SET RATING PARAMETERS!!--------------------------------------------------------------------------------------------------------------------------------
+var queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";//this will get placed into my AJAX call with my GET method.
 
 //console log query url to test call & check for errors
 console.log(queryURL);
@@ -38,7 +40,7 @@ function topicButtonsGen() {
         apiButtons.attr("type","button");
         apiButtons.attr("data-topicvalue",topics[i]);
         //add classes for bootstrap bootstrap styling and a handle for click event/custom styling
-        apiButtons.addClass("btn btn btn-dark api-call-buttons");
+        apiButtons.addClass("btn btn btn-dark api-call-buttons m-1");
         //places string from current index of the topics array
         apiButtons.text(topics[i]);
         //append the values to the button-placement div each iteration of the loop
@@ -55,6 +57,9 @@ function imageCreation(ajaxData)  {
     
 
     console.log(gifImgData);
+    
+    $("#image-box").empty(); //remove previous images each new request. 
+
 
     for (var gifIndex = 0; gifIndex < gifImgData.length; gifIndex++)   {
 
@@ -64,18 +69,26 @@ function imageCreation(ajaxData)  {
 
         var animatedUrl = gifImgData[gifIndex].images.original.url;
 
-        var imageDiv = $("<div>");
-        
+        var imageFigure = $("<figure>");
         var imgTag = $("<img>");
+        var figCaption = $("<figcaption>");
+        figCaption.addClass("figure-caption text-center");
+        imageFigure.addClass("figure col-md-3 col-lg-4");
+        figCaption.text("Rated: "+gifRating); 
         
-        imgTag.attr("src",fixedUrl);// got the static images to display need to add ratings 
+        imgTag.addClass("img-fluid")
+        imgTag.attr("src",fixedUrl);
+        imgTag.attr("data-fixed",fixedUrl);
+        imgTag.attr("data-anime",animatedUrl);
+        
+        //<figcaption class="figure-caption">A caption for the above image.</figcaption>
+        // got the static images to display need to add ratings 
         //need to add data tags to allow click event to switch between static and gif animated. 
-        //need to remove previous images each new request. 
 
-        imageDiv.append(imgTag);
+        imageFigure.append(imgTag);
+        imageFigure.prepend(figCaption);
 
-
-        $("#image-box").prepend(imageDiv);
+        $("#image-box").prepend(imageFigure);
 
         console.log(gifRating);
         console.log(fixedUrl);
@@ -111,11 +124,10 @@ function getApiCallData() {
         return responseData;
 
     })
-    queryURL = "https://api.giphy.com/v1/gifs/search?"+"limit="+limitValue+apiKey+"&q=";
+    queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";
     console.log(queryURL);
 
 }
-
 
 // this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
 //this will take in the retrieved Data from the AJAX call response
