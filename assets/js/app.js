@@ -70,7 +70,7 @@ function imageCreation(ajaxData)  {
 function getApiCallData() {
 
     var searchValue = this.getAttribute('data-topicvalue').trim();
-    $("#gifDisplay").html("Displaying: " + "<h4>"+searchValue+" Gifs</h4>"  + "Click the Images to animate them!" );
+    $("#gifDisplay").html("Displaying: " + "<h4 class='display-3 font-italic'>"+searchValue+" Gifs</h4>"  + "Click the Images to animate them!" );
     searchValue = searchValue.toLowerCase();
     searchValue = encodeURI(searchValue);//use the Value from the button clicked and remove spaces
     queryURL+=searchValue;//attach the value from the button clicked to AJAX search query             
@@ -89,19 +89,15 @@ $(function() { // Shorthand for $( document ).ready()
 
     topicButtonsGen();//initial call to generate the TOPICS Array buttons when the page is loaded.
 
-    $("#textButton").on( "click", function() {  
+    $("#textButton").on( "click", function() {  //need error handling to prevent any input from submitting to topics array
         
         event.preventDefault();
         var buttonData = $("#userButtonText").val().trim();
+
         topics.push(buttonData);
-        console.log(buttonData);
 
         $("#userButtonText").val("");
         buttonData = '';
-        console.log("User entered: "+ buttonData +" ;in the textbox" );
-      
-        console.log(buttonData);
-
         topicButtonsGen();//Call to the API BUTTON placement function to add to the HTML document new user input along with everything in the array previously
         
         });
