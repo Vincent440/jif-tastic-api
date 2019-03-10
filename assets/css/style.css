@@ -1,7 +1,13 @@
 h1 {
-    color:red;
+    
     text-decoration: underline;
 }
 .api-call-buttons {
     margin: 5px;
+}
+body {
+    background-color: skyblue;
+}
+#bottomBtn {
+    display: none;
 }

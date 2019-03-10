@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-console */
 /*eslint-env browser*/
 /*global $*/
 //--------------------------------------------------------------------------------------------------------------
@@ -8,28 +6,15 @@
 var topics = ["Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune","Lunar",
 "Sun","Comets","Asteroids","Space","Stars","Galaxy","Cosmos","Astronomy","Universe","Black Holes"];//Starting topics array based around Space/astronomy styles
 
-//API key used to retrieve data from the servers.
-var apiKey= "&api_key=aDWTP2Hv0BWis8vPpDBeKqrdD6aBRF6W";
-//Request limit set to 10, bonus = add another user input to adjust the limit accordingly to whatever value is selected. 
-var limitValue = "10";
-//a string containing the search request using the VALUE of the button clicked. currently space to test api call 
-var queryUserInput ="";
+var apiKey= "&api_key=aDWTP2Hv0BWis8vPpDBeKqrdD6aBRF6W";//API key used to retrieve data from the servers.
 
-//the query url to call the api using string concatenation to build the API request based off of what button is clicked
-//bonuses= add option to adjust limit, option to append more gifs instead of just replace, option to local storage save favorites gifs
-
-//NEED TO SET RATING PARAMETERS!!--------------------------------------------------------------------------------------------------------------------------------
-var queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";//this will get placed into my AJAX call with my GET method.
-
-//console log query url to test call & check for errors
-console.log(queryURL);
+var limitValue = "12";//Request limit set to 12, bonus = add another user input to adjust the limit accordingly to whatever value is selected. 
+var queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";
+//query url with rating hard coded in, with variable limit and search parameters. 
 //-----------------------------------------FUNCTION CREATION-----------------------------------------------------
-//function to generate buttons with the topics array as the data Value
-//topicButtonsGen function will be called when the page loads , and on the click event for the Api Topic Submit button to add new values the user input
 function topicButtonsGen() {
 
-    //clear the DIV containing the current ApiTopic buttons to prevent duplicates 
-    $("#button-placement").empty();
+    $("#button-placement").empty();//clear the DIV containing the current ApiTopic buttons to prevent duplicates 
         
     for (var i = 0 ; i < topics.length ; i++) {
 
@@ -46,55 +31,37 @@ function topicButtonsGen() {
         //append the values to the button-placement div each iteration of the loop
         $("#button-placement").append(apiButtons);
     }
-    
 }
-
 function imageCreation(ajaxData)  {
-
-    //console.log(ajaxData);
 
     var gifImgData = ajaxData.data;
     
-
-    console.log(gifImgData);
-    
     $("#image-box").empty(); //remove previous images each new request. 
-
 
     for (var gifIndex = 0; gifIndex < gifImgData.length; gifIndex++)   {
 
         var gifRating = gifImgData[gifIndex].rating;
-
         var fixedUrl = gifImgData[gifIndex].images.original_still.url;
-
         var animatedUrl = gifImgData[gifIndex].images.original.url;
-
         var imageFigure = $("<figure>");
         var imgTag = $("<img>");
         var figCaption = $("<figcaption>");
-        figCaption.addClass("figure-caption text-center");
-        imageFigure.addClass("figure col-md-3 col-lg-4");
-        figCaption.text("Rated: "+gifRating); 
-        
-        imgTag.addClass("img-fluid")
-        imgTag.attr("src",fixedUrl);
-        imgTag.attr("data-fixed",fixedUrl);
-        imgTag.attr("data-anime",animatedUrl);
-        
-        //<figcaption class="figure-caption">A caption for the above image.</figcaption>
-        // got the static images to display need to add ratings 
-        //need to add data tags to allow click event to switch between static and gif animated. 
 
+        imageFigure.addClass("figure col-md-3 col-lg-4");
         imageFigure.append(imgTag);
         imageFigure.prepend(figCaption);
 
-        $("#image-box").prepend(imageFigure);
+        imgTag.addClass("img-fluid imgClick")
+        imgTag.attr("src",fixedUrl);
+        imgTag.attr("data-fixed",fixedUrl);//0 for fixed image
+        imgTag.attr("data-animated",animatedUrl);//1 for animated gif
+        imgTag.attr("data-status",false);
+        imgTag.attr("alt","Image failed to load from server.");
 
-        console.log(gifRating);
-        console.log(fixedUrl);
-        console.log(animatedUrl);
-        //console.log(gifImgData[gifIndex]);
-        //console.log(gifIndex);
+        figCaption.addClass("figure-caption text-center");
+        figCaption.text("Rated: "+gifRating); 
+       
+        $("#image-box").prepend(imageFigure);
     }
 
 }
@@ -103,102 +70,56 @@ function imageCreation(ajaxData)  {
 function getApiCallData() {
 
     var searchValue = this.getAttribute('data-topicvalue').trim();
-
+    $("#gifDisplay").html("Displaying: " + "<h4>"+searchValue+" Gifs</h4>"  + "Click the Images to animate them!" );
     searchValue = searchValue.toLowerCase();
-
-    searchValue = encodeURI(searchValue);
-    console.log(searchValue);//use the Value from the button clicked 
-
-    queryURL+=searchValue;//attach to AJAX call the value in the search term grabbed from the button clicked.   
-            
-    console.log(queryURL);
-
-    $.ajax({//AJAX CALL
-        
+    searchValue = encodeURI(searchValue);//use the Value from the button clicked and remove spaces
+    queryURL+=searchValue;//attach the value from the button clicked to AJAX search query             
+    $.ajax({//AJAX CALL        
         url:queryURL,
         type:"GET"
-
     }).then(function(responseData) {
         imageCreation(responseData)
-        //console.log(responseData);
         return responseData;
-
     })
-    queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";
-    console.log(queryURL);
-
+    queryURL = "https://api.giphy.com/v1/gifs/search?rating=pg-13&limit="+limitValue+apiKey+"&q=";//RESETS QUERY URL
+    $("#bottomBtn").show();//shows scroll to top button
 }
-
-// this Function will be called Inside the AJAX then function |OR| this code will go inside the then function
-//this will take in the retrieved Data from the AJAX call response
-
-//variable to create image tags to store GIF Web URLs
-
-//a for loop ( to loop through each index of the retrieved data from the GIPHY api)
-//
-//place the web url of the image inside the SRC of the image element var created
-//add attributes to the images if needed here
-//add a class to the gifs for either styling or click function if needed to start/stop animation
-//DOM push the gifs to the page inside the DIV created to hold them
-
 //----DOCUMENT READY-----------------------FUNCTION CALLS AND CLICK EVENTS-----------------------------------------
+$(function() { // Shorthand for $( document ).ready()
 
-// Shorthand for $( document ).ready()
-$(function() {
-
-    //document ready function to prevent any issues well loading JS and the page. 
-    //initial call to generate the TOPICS Array buttons when the page is loaded.
-
-    topicButtonsGen();
-
-    console.log( "ready!" );    
+    topicButtonsGen();//initial call to generate the TOPICS Array buttons when the page is loaded.
 
     $("#textButton").on( "click", function() {  
         
-        //Click event for submit button
-        //  event prevent default to stop page from refreshing on clicks
-        //      take in value and push it to topics array
-        //      Call function to clear Gif button divs & generate buttons with updated array values
-        //     clear the textbox inside the html to wait for new user input, and dump the variable containing the previous user input.
-
-        //--------------console.log is your friend----------------------
         event.preventDefault();
-        
         var buttonData = $("#userButtonText").val().trim();
+        topics.push(buttonData);
         console.log(buttonData);
-        $("#userButtonText").val("");
-        console.log("User entered: "+ buttonData +" ;in the textbox" );
-        buttonData='';
-        console.log(buttonData);
-        topicButtonsGen();//Call to the API BUTTON placement function to add to the HTML document new user input along with everything in the array previously
 
-    });
+        $("#userButtonText").val("");
+        buttonData = '';
+        console.log("User entered: "+ buttonData +" ;in the textbox" );
+      
+        console.log(buttonData);
+
+        topicButtonsGen();//Call to the API BUTTON placement function to add to the HTML document new user input along with everything in the array previously
+        
+        });
     //Click event for API Call buttons class on the document
     $(document).on( "click",".api-call-buttons", getApiCallData);
 
-    $(document).on( "click",/*ENTER GIF CLASS HERE */ function() {
-
-        // document click event for GIF images to start/stop them 
+    $(document).on( "click",".imgClick", function() {// document click event for GIF images to start/stop the
+        var animated = $(this).data("status");
+        var imgFix = $(this).data("fixed");
+        var imgGif = $(this).data("animated");
         //if statement, for if the image is static, animate it/ if statement to do opposite, if animated make static.
-        //      on the click event of the gif class have the image src switch from image_Still url to the playable gif_url retrived from the response. 
-        //      will NEED to read more on the DOCUMENTATION/ test out gifs on page when they are succesfully placed into html
-
+        if ( animated == false )  {
+            $(this).attr( "src" , imgGif );
+            $(this).data( "status" , true );
+        }
+        if ( animated == true )  {
+            $(this).attr( "src" , imgFix );
+            $(this).data( "status" , false );
+        } 
     });
-
 });
-
-
-/*
-When the user clicks on a button, the page should grab 10 static, non-animated gif images from the GIPHY API and place them on the page.
-When the user clicks one of the still GIPHY images, the gif should animate. If the user clicks the gif again, it should stop playing.
-
-Under every gif, display its rating (PG, G, so on).
-
-
-This data is provided by the GIPHY API.
-Only once you get images displaying with button presses should you move on to the next step.
-
-
-Add a form to your page takes the value from a user input box and adds it into your topics array. Then make a function call that takes each topic in the array remakes the buttons on the page.
-Deploy your assignment to Github Pages.
-Rejoice! You just made something really cool. */
