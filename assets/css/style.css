@@ -1,29 +1,29 @@
 h1 {
-    color:white;
-    text-decoration: underline;
+  color: white;
+  text-decoration: underline;
 }
 .api-call-buttons {
-    margin: 5px;
+  margin: 5px;
 }
 body {
-    color:white;
-    background-color: skyblue;
-    background-image: url("../images/cork-board-background.png");
+  color: white;
+  background-color: skyblue;
+  background-image: url("../images/cork-board-background.png");
 }
 .formBox {
-    background-color: gray;
-    border-style: groove;
+  background-color: gray;
+  border-style: groove;
 }
 #bottomBtn {
-    display: none;
+  display: none;
 }
 #titleHeader {
-    text-decoration: none;
+  text-decoration: none;
 }
 .figure-caption {
-    font-size: 1.5rem;
-    color: whitesmoke;
+  font-size: 1.5rem;
+  color: whitesmoke;
 }
 hr {
-    background-color:white;
+  background-color: white;
 }

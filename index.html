@@ -1,78 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <!--Link to Portfolio Page https://vincent440.github.io/portfolio.html with link to live game page-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Vinces Gif Machine</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="assets/css/style.css">    
-</head>
-<body>
-    
-    <!--Contaianer for bootstrap styling-->
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
     <div class="container">
-        <!--Title row -->
-        <div class="row text-center">
-            <div class="col-12">
-              <h1 id="titleHeader" class="display-2">The Gif Board</h1>
+      <!--Title row -->
+      <div class="row text-center">
+        <div class="col-12">
+          <h1 id="titleHeader" class="display-2">The Gif Board</h1>
+        </div>
+      </div>
+      <hr />
+      <!--Button and form row-->
+      <div class="row">
+        <div class="col-md-5 col-lg-3 formBox">
+          <form>
+            <div class="form-group text-center m-1">
+              <label for="userButtonText">Create New Search Buttons Below!</label>
+              <input type="text" class="form-control" id="userButtonText" aria-describedby="create buttons" placeholder="Enter Text Here:" />
+              <small id="userButtonTextHelp" class="form-text">Enter Text and Click the Submit button to see new searchable Gif buttons appear</small>
+              <button type="text" class="btn btn-danger btn-block m-2" id="textButton">Create New Buttons</button>
             </div>
+          </form>
         </div>
-        <hr>
-            <!--Button and form row-->
-        <div class="row">
-                
-            <div class="col-md-5 col-lg-3 formBox">
-
-                <form>
-                    <div class="form-group text-center m-1">
-
-                        <label for="userButtonText">Create New Search Buttons Below!</label>
-                        <input type="text" class="form-control" id="userButtonText" aria-describedby="create buttons" placeholder="Enter Text Here:">
-                        <small id="userButtonTextHelp" class="form-text">Enter Text and Click the Submit button to see new searchable Gif buttons appear</small>
-                        <button type="text" class="btn btn-danger btn-block m-2" id="textButton">Create New Buttons</button>
-
-                    </div>
-                        
-                </form>
-
-            </div>
-
-            <!--where the buttons created will go-->
-            <div class="col-md-7 col-lg-9" id="button-placement">
-            </div>
-            
+        <div class="col-md-7 col-lg-9" id="button-placement"><!-- Where the GIPHY api buttons will be placed --></div>
+      </div>
+      <div class="row text-center">
+        <div class="col-12">
+          <div class="notify-box">
+            <h3 id="gifDisplay">Click on the buttons to generate gifs!</h3>
+          </div>
         </div>
-        <div class="row text-center">
-            <div class="col-12">
-                <div class="notify-box">
-                    
-                  <h3 id="gifDisplay">Click on the buttons to generate gifs!</h3>
-
-                </div>
-            </div>
+      </div>
+      <hr />
+      <!-- Row to hold images from GIPHY api -->
+      <div class="row" id="image-box"><!--where the Giphys images from the ajax call will be placed--></div>
+      <!-- Go back to top A Tag -->
+      <div class="row">
+        <div class="col-12 text-center">
+          <button type="button" class="btn btn-dark" id="bottomBtn"><a href="#titleHeader">Back To Top!</a></button>
         </div>
-        <!--cute little cut off line-->
-        <hr>
-        <!--Ajax Call placement-->
-        <div class="row"id="image-box"><!--where the Giphys will be placed-->
-                      
-        </div>
-        <!--Go back to top A Tag-->
-        <div class="row">
-            <div class="col-12 text-center">
-                <button type="button" class="btn btn-dark"id="bottomBtn"><a href="#titleHeader">Back To Top!</a></button>
-            </div> 
-        </div>
-    </div> 
-
-    <!--closing of bootstrap container-->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="assets/js/app.js"></script>
-
-</body>
+  </body>
 </html>
